@@ -10,6 +10,7 @@ import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,12 +37,14 @@ public class FileService {
 
     public static void writeReport(Report report, String directoryPath) {
         List<Report.Record> records = report.getRecords();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(directoryPath + "output.csv"))) {
+        try (BufferedWriter writer = new BufferedWriter(
+                new FileWriter(directoryPath + "output.csv", StandardCharsets.UTF_8))) {
             writer.write("Time, ProductionCenter, WorkersCount, BufferCount");
             writer.newLine();
 
             for (Report.Record record : records) {
-                writer.write(record.time() + DELIMITER + record.productionCenter() + DELIMITER + record.workersCount() + DELIMITER + record.BufferCount());
+                writer.write(record.time() + DELIMITER + record.productionCenter() +
+                        DELIMITER + record.workersCount() + DELIMITER + record.BufferCount());
                 writer.newLine();
             }
         } catch (IOException e) {
